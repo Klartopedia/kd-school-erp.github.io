@@ -1,1 +1,3 @@
-# kd-school-erp.github.io
+# KD School ERP
+
+This repository is used for staging demos.
