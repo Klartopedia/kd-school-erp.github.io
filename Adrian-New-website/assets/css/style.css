@@ -3,14 +3,23 @@
 /*----------------------------------------*/
 /*  01. THEME DEFAULT CSS START
 /*----------------------------------------*/
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
+@font-face {
+  font-family: 'arrus_btbold';
+  src: url('../fonts/arrus_bt_bold-webfont.woff2') format('woff2'),
+       url('../fonts/arrus_bt_bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 :root {
   /**
   @font family declaration
   */
-  --tp-ff-body: 'Roboto', sans-serif;
-  --tp-ff-heading: 'Roboto', sans-serif;
-  --tp-ff-p: 'Roboto', sans-serif;
+  --tp-ff-body: 'arrus_btbold';
+  --tp-ff-heading: 'arrus_btbold';
+  --tp-ff-p: 'arrus_btbold';
   --tp-ff-fontawesome: "Font Awesome 6 Pro";
   /**
   @color declaration
@@ -10312,6 +10321,7 @@ p.checkout-coupon input[type=text]:focus {
   .logo img {
       width: 450px !important;
   }
+
 }
 
 
