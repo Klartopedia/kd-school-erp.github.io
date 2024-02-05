@@ -1571,7 +1571,7 @@ input[type=color] {
 
 /* logo */
 .logo img {
-  width: 150px;
+  width: 100%;
 }
 
 /* main menu css */
@@ -10319,7 +10319,7 @@ p.checkout-coupon input[type=text]:focus {
 
 
   .logo img {
-      width: 450px !important;
+      width: 100%;
   }
 
 }
