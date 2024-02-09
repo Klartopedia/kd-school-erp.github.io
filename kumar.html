@@ -120,7 +120,7 @@
         border-radius: 50%;
         filter: drop-shadow(0 0 3.1rem rgba(255, 255, 255, 0.8));
         margin-left: 43%;
-        margin-top: 30%;
+        margin-top: calc(50% - 45px);
     }
 
     button {
@@ -180,7 +180,7 @@
         <div class="fake-player" id="start" class='button play' onclick="playing()">
             <button role="play" class="play"></button>
         </div>
-        <p>kindly please click/play this......!</p>
+        <p id="texts">kindly please click/play this......!</p>
 
         <h2 id="text1"></h2>
         <p id="audioContainer"></p>
@@ -234,6 +234,7 @@
             var audioElement = playAudio(); // Get the audioElement
             audioElement.play(); // Play the audio
             document.getElementById('start').style.display = 'none'
+            document.getElementById('texts').style.display = 'none'
         }
     </script>
 
