@@ -13,6 +13,14 @@
         height: 100%;
     }
 
+    #id {
+        margin-top: 30%;
+        width: 14rem;
+        height: 3rem;
+        font-size: 2rem;
+    }
+
+
     .bg_heart {
         position: relative;
         top: 0;
@@ -95,12 +103,85 @@
     }
 </style>
 
+<style>
+    :root {
+        --button-height: 2rem;
+        --button-color: #edd;
+    }
+
+    .fake-player {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 4rem;
+        heigth: 4rem;
+        padding: 2rem;
+        border: 0.2rem solid var(--button-color);
+        border-radius: 50%;
+        filter: drop-shadow(0 0 3.1rem rgba(255, 255, 255, 0.8));
+        margin-left: 43%;
+        margin-top: 30%;
+    }
+
+    button {
+        margin: 0;
+        padding: 0;
+    }
+
+    .play {
+        height: 0;
+        width: 0;
+        margin-left: calc(2 * 0.14 * var(--button-height));
+        /*margin-left: 17px;*/
+        background: none;
+        border: none;
+        border-top: var(--button-height) solid transparent;
+        border-bottom: var(--button-height) solid transparent;
+        border-left: calc(var(--button-height) * 2 * 0.86) solid var(--button-color);
+
+    }
+
+    .pause {
+        position: relative;
+        background: none;
+        border: none;
+        height: calc(var(--button-height) * 2);
+        width: calc(var(--button-height) * 2 * 0.86);
+
+        &:before,
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 33%;
+            background: var(--button-color);
+        }
+
+        &:before {
+            left: 0;
+        }
+
+        &:after {
+            right: 0;
+        }
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
 <body>
 
     <div class="bg_heart"></div>
 
     <div class="container">
-        <button onclick="playing()">start</button>
+        <div class="fake-player" id="start" class='button play' onclick="playing()">
+            <button role="play" class="play"></button>
+        </div>
+        <p>kindly please click/play this......!</p>
+
         <h2 id="text1"></h2>
         <p id="audioContainer"></p>
     </div>
@@ -152,6 +233,7 @@
             typeWriter();
             var audioElement = playAudio(); // Get the audioElement
             audioElement.play(); // Play the audio
+            document.getElementById('start').style.display = 'none'
         }
     </script>
 
