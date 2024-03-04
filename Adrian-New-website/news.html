@@ -3,198 +3,264 @@ include("mysqlconnect.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <title>Adrian Loyal School | News</title>
-      <meta name="description" content>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <!-- Place favicon.ico in the root directory -->
-      <link rel="shortcut icon" type="image/x-icon"
-         href="assets/img/favicon.png">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="x-ua-compatible" content="ie=edge">
+   <title>Adrian Loyal School | News</title>
+   <meta name="description" content>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <!-- CSS here -->
-      <link rel="stylesheet" href="assets/css/bootstrap.css">
-      <link rel="stylesheet" href="assets/css/meanmenu.css">
-      <link rel="stylesheet" href="assets/css/animate.css">
-      <link rel="stylesheet" href="assets/css/owl-carousel.css">
-      <link rel="stylesheet" href="assets/css/swiper-bundle.css">
-      <link rel="stylesheet" href="assets/css/backtotop.css">
-      <link rel="stylesheet" href="assets/css/magnific-popup.css">
-      <link rel="stylesheet" href="assets/css/nice-select.css">
-      <link rel="stylesheet" href="assets/css/font-awesome-pro.css">
-      <link rel="stylesheet" href="assets/css/spacing.css">
-      <link rel="stylesheet" href="assets/css/style.css">
-   </head>
-   <body>
+   <!-- Place favicon.ico in the root directory -->
+   <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
 
-      <!-- pre loader area start -->
-      <div id="loading">
-         <div id="loading-center">
-            <div id="loading-center-absolute">
-               <svg id="loader">
-                  <path id="corners"
-                     d="m 0 12.5 l 0 -12.5 l 50 0 l 0 50 l -50 0 l 0 -37.5" />
-               </svg>
-               <img src="assets/img/favicon.png" alt>
+   <!-- CSS here -->
+   <link rel="stylesheet" href="assets/css/bootstrap.css">
+   <link rel="stylesheet" href="assets/css/meanmenu.css">
+   <link rel="stylesheet" href="assets/css/animate.css">
+   <link rel="stylesheet" href="assets/css/owl-carousel.css">
+   <link rel="stylesheet" href="assets/css/swiper-bundle.css">
+   <link rel="stylesheet" href="assets/css/backtotop.css">
+   <link rel="stylesheet" href="assets/css/magnific-popup.css">
+   <link rel="stylesheet" href="assets/css/nice-select.css">
+   <link rel="stylesheet" href="assets/css/font-awesome-pro.css">
+   <link rel="stylesheet" href="assets/css/spacing.css">
+   <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+   <script>
+      function getAllEvents() {
+         return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://api.klartopedia.in/api/eventinfo/allevent/4', true);
+            xhr.onreadystatechange = function () {
+               if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                     const response = JSON.parse(xhr.responseText);
+                     resolve(response);
+                  } else {
+                     reject('Error fetching events');
+                  }
+               }
+            };
+            xhr.send();
+         });
+      }
+
+      function handleEvents() {
+         getAllEvents()
+            .then((temp) => {
+               const eventsContainer = document.getElementById('eventsListContainer');
+
+               const eventsList = temp.filter((ele) => ele.show_website.data[0] == 1)
+               if (eventsList && eventsList.length) {
+                  eventsList.forEach((event) => {
+                     const eventDiv = document.createElement('div');
+                     eventDiv.className = 'row';
+                     eventDiv.style.textAlign = 'center';
+
+                     const innerHTML = `
+                              <div>
+                                  <div class="course-card course-card-blog">
+                                      <div class="event-card">
+                                          <div class="post-user mt-3">
+                                              <h2 class="mb-xs mt-xs"><b>${event.title}</b></h2>
+                                              <div class="date-range">
+                                                  <div class="start-date-parent">
+                                                      <p class="course-card-description">
+                                                          <span class="date-range-para">EVENTS.START-DATE:</span>
+                                                          ${new Date(event.start_date).toLocaleDateString()}
+                                                      </p>
+                                                  </div>
+                                                  <div class="end-date-parent">
+                                                      <p class="course-card-description">
+                                                          <span class="date-range-para">EVENTS.END-DATE:</span>
+                                                          ${new Date(event.end_date).toLocaleDateString()}
+                                                      </p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <p class="course-card-description" style="padding: 15px;">${event.content}</p>
+                                      </div>
+                                  </div>
+                              </div>`;
+
+                     eventDiv.innerHTML = innerHTML;
+                     eventsContainer.appendChild(eventDiv);
+                  });
+               }
+            })
+            .catch((error) => {
+               console.error(error);
+            });
+      }
+
+      // Call the function to fetch and handle events
+      handleEvents();
+   </script>
+
+
+   <!-- pre loader area start -->
+   <div id="loading">
+      <div id="loading-center">
+         <div id="loading-center-absolute">
+            <svg id="loader">
+               <path id="corners" d="m 0 12.5 l 0 -12.5 l 50 0 l 0 50 l -50 0 l 0 -37.5" />
+            </svg>
+            <img src="assets/img/favicon.png" alt>
+         </div>
+      </div>
+   </div>
+   <!-- pre loader area end -->
+
+   <!-- back to top start -->
+   <div class="progress-wrap">
+      <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+      </svg>
+   </div>
+   <!-- back to top end -->
+
+
+   <!-- offcanvas area start -->
+   <div class="offcanvas__area">
+      <div class="modal fade" id="offcanvasmodal" tabindex="-1" aria-labelledby="offcanvasmodal" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="offcanvas__wrapper">
+                  <div class="offcanvas__content">
+                     <div class="offcanvas__top mb-40 d-flex justify-content-between align-items-center">
+                        <div class="offcanvas__logo logo">
+                           <a href="index.html">
+                              <img src="assets/img/logo/logo-dark.svg" alt="logo">
+                           </a>
+                        </div>
+                        <div class="offcanvas__close">
+                           <button class="offcanvas__close-btn" data-bs-toggle="modal" data-bs-target="#offcanvasmodal">
+                              <i class="fal fa-times"></i>
+                           </button>
+                        </div>
+                     </div>
+
+                     <div class="mobile-menu fix"></div>
+
+                  </div>
+               </div>
             </div>
          </div>
       </div>
-      <!-- pre loader area end -->
+   </div>
+   <!-- offcanvas area end -->
+   <div class="body-overlay"></div>
+   <!-- offcanvas area end -->
 
-      <!-- back to top start -->
-      <div class="progress-wrap">
-         <svg class="progress-circle svg-content" width="100%" height="100%"
-            viewBox="-1 -1 102 102">
-            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-         </svg>
-      </div>
-      <!-- back to top end -->
+   <header>
+      <div class="header__area">
 
+         <div class="header__bottom" id="header-sticky">
+            <div class="container">
+               <div class="row align-items-center">
+                  <div class="col-xxl-12 col-xl-12 col-lg-12 d-none d-lg-block">
+                     <div class="logo mt-10">
+                        <a href="index.html">
+                           <img src="assets/img/logo/logo.svg" alt="logo">
+                        </a>
+                     </div>
+                     <div class="main-menu">
+                        <nav id="mobile-menu">
+                           <ul>
 
-      <!-- offcanvas area start -->
-      <div class="offcanvas__area">
-         <div class="modal fade" id="offcanvasmodal" tabindex="-1" aria-labelledby="offcanvasmodal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                   <div class="offcanvas__wrapper">
-                      <div class="offcanvas__content">
-                         <div class="offcanvas__top mb-40 d-flex justify-content-between align-items-center">
-                            <div class="offcanvas__logo logo">
-                               <a href="index.html">
-                               <img src="assets/img/logo/logo-dark.svg" alt="logo">
-                               </a>
-                            </div>
-                            <div class="offcanvas__close">
-                               <button class="offcanvas__close-btn" data-bs-toggle="modal" data-bs-target="#offcanvasmodal">
-                                  <i class="fal fa-times"></i>
-                               </button>
-                            </div>
-                         </div>
-                         
-                         <div class="mobile-menu fix"></div>
-                         
-                      </div>
-                   </div>
-                </div>
-            </div>
-        </div>
-      </div>
-      <!-- offcanvas area end -->      
-      <div class="body-overlay"></div>
-      <!-- offcanvas area end -->
+                              <li>
+                                 <a href="home.html">Home</a>
+                              </li>
+                              <li>
+                                 <a href="about.html">About</a>
+                              </li>
+                              <li>
+                                 <a href="syllabus.html">Syllabus and
+                                    Curriculum</a>
+                              </li>
+                              <li class="has-dropdown">
+                                 <a href="facilities.html">Facilities</a>
+                                 <ul class="submenu">
+                                    <li><a href="luncheon.html">LUNCHEON @
+                                          ADRIAN</a></li>
+                                    <li><a href="van.html">Van facilities</a></li>
+                                 </ul>
+                              </li>
+                              <li>
+                                 <a href="news.html">News & Notice</a>
+                              </li>
+                              <li>
+                                 <a href="mandatorydisclosure.html">Mandatory
+                                    Public Disclosure</a>
+                              </li>
 
-      <header>
-         <div class="header__area">
-
-            <div class="header__bottom" id="header-sticky">
-               <div class="container">
-                  <div class="row align-items-center">
-                     <div
-                        class="col-xxl-12 col-xl-12 col-lg-12 d-none d-lg-block">
-                        <div class="logo mt-10">
+                           </ul>
+                        </nav>
+                     </div>
+                  </div>
+                  <div class="d-xl-none d-lg-none d-flex justify-content-center">
+                     <div class="header__bottom-left pl-30">
+                        <div class="logo">
                            <a href="index.html">
                               <img src="assets/img/logo/logo.svg" alt="logo">
                            </a>
                         </div>
-                        <div class="main-menu">
-                           <nav id="mobile-menu">
-                              <ul>
-
-                                 <li>
-                                    <a href="home.html">Home</a>
-                                 </li>
-                                 <li>
-                                    <a href="about.html">About</a>
-                                 </li>
-                                 <li>
-                                    <a href="syllabus.html">Syllabus and
-                                       Curriculum</a>
-                                 </li>
-                                 <li class="has-dropdown">
-                                    <a href="facilities.html">Facilities</a>
-                                    <ul class="submenu">
-                                       <li><a href="luncheon.html">LUNCHEON @
-                                             ADRIAN</a></li>
-                                       <li><a href="van.html">Van facilities</a></li>
-                                    </ul>
-                                 </li>
-                                 <li>
-                                    <a href="news.html">News & Notice</a>
-                                 </li>
-                                 <li>
-                                    <a href="mandatorydisclosure.html">Mandatory
-                                       Public Disclosure</a>
-                                 </li>
-
-                              </ul>
-                           </nav>
-                        </div>
                      </div>
-                     <div
-                        class="d-xl-none d-lg-none d-flex justify-content-center">
-                        <div class="header__bottom-left pl-30">
-                           <div class="logo">
-                              <a href="index.html">
-                                 <img src="assets/img/logo/logo.svg" alt="logo">
-                              </a>
-                           </div>
-                        </div>
-                        <div class="header__bottom-right pl-30">
+                     <div class="header__bottom-right pl-30">
 
-                           <div class="header__hamburger ml-50 d-xl-none">
-                              <button type="button" data-bs-toggle="modal"
-                                 data-bs-target="#offcanvasmodal"
-                                 class="hamurger-btn">
-                                 <span></span>
-                                 <span></span>
-                                 <span></span>
-                              </button>
-                           </div>
+                        <div class="header__hamburger ml-50 d-xl-none">
+                           <button type="button" data-bs-toggle="modal" data-bs-target="#offcanvasmodal"
+                              class="hamurger-btn">
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                           </button>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
-      </header>
+      </div>
+   </header>
 
-      <!-- breadcrumb area start -->
-      <section
-         class="breadcrumb__area include-bg pt-150 pb-150 breadcrumb__overlay"
-         data-background="assets/img/backgrounds/mountains-12.jpg">
-         <div class="container">
-            <div class="row">
-               <div class="col-xxl-12">
-                  <div
-                     class="breadcrumb__content text-center p-relative z-index-1">
-                     <h3 class="breadcrumb__title">News</h3>
-                     <div class="breadcrumb__list">
-                        <span><a href="home.html">Home</a></span>
-                        <span class="dvdr"><i class="fa-regular fa-angle-right"></i></span>
-                        <span>About</span>
-                        <span class="dvdr"><i class="fa-regular fa-angle-right"></i></span>
-                        <span>News</span>
-                     </div>
+   <!-- breadcrumb area start -->
+   <section class="breadcrumb__area include-bg pt-150 pb-150 breadcrumb__overlay"
+      data-background="assets/img/backgrounds/mountains-12.jpg">
+      <div class="container">
+         <div class="row">
+            <div class="col-xxl-12">
+               <div class="breadcrumb__content text-center p-relative z-index-1">
+                  <h3 class="breadcrumb__title">News</h3>
+                  <div class="breadcrumb__list">
+                     <span><a href="home.html">Home</a></span>
+                     <span class="dvdr"><i class="fa-regular fa-angle-right"></i></span>
+                     <span>About</span>
+                     <span class="dvdr"><i class="fa-regular fa-angle-right"></i></span>
+                     <span>News</span>
                   </div>
                </div>
             </div>
          </div>
-      </section>
-      <!-- breadcrumb area end -->
-      <!-- histroy area start -->
-      <section class="brand__area pb-70 py-5">
-         <div class="container">
-            <div class="row">
-               <div class="col-xxl-9 col-xl-9 col-lg-9">
-                  <div class="brand__wrapper">
-                     <div class="entry">
-                        <div class="top">
-                           <h3 class="title"><a href="#"> News <strong>& Notice
-                                 </strong></a></h3>
-                        </div>
-                        <table class="table table-striped  table-hover">
+      </div>
+   </section>
+   <!-- breadcrumb area end -->
+   <!-- histroy area start -->
+   <section class="brand__area pb-70 py-5">
+      <div class="container">
+         <div class="row">
+            <div class="col-xxl-9 col-xl-9 col-lg-9">
+               <div class="brand__wrapper">
+                  <div class="entry">
+                     <div class="top">
+                        <h3 class="title"><a href="#"> News <strong>& Notice
+                              </strong></a></h3>
+                     </div>
+                     <!-- <table class="table table-striped  table-hover">
                            <tr>
                               <th>Date</th>
                               <th>News Heading</th>
@@ -206,207 +272,178 @@ include("mysqlconnect.php");
                               <td>Admission Open Now 2024 - 2025 | Classes
                                  Pre-school - Grade IX</td>
                            </tr>
-                        </table>
+                        </table> -->
+
+                     <div class="body" id="eventsListContainer" style="border: 1px solid #d4c6c6;">
+                        <!-- JavaScript will dynamically populate this container -->
                      </div>
+
 
                   </div>
 
                </div>
-               <div class="col-xxl-3 col-xl-3 col-lg-3">
-                  <div class="sb-block bottom-space-2 quick-links">
 
-                     <ul class="nav-list">
-                        <li><a href="our-school.html">About the Adrian</a></li>
-                        <li><a href="about.html#our-principal">Principal’s Profile</a></li>
+            </div>
+            <div class="col-xxl-3 col-xl-3 col-lg-3">
+               <div class="sb-block bottom-space-2 quick-links">
 
-                        <li><a href="whyadrian.html">Why the Adrian?</a></li>
+                  <ul class="nav-list">
+                     <li><a href="our-school.html">About the Adrian</a></li>
+                     <li><a href="about.html#our-principal">Principal’s Profile</a></li>
 
-                        <li><a href="syllabus.html">Syllabus and Curriculum</a></li>
-                        <li><a href="facilities.html">Facilities </a></li>
-                        <li><a href="luncheon.html">Luncheon @ The Adrian </a></li>
+                     <li><a href="whyadrian.html">Why the Adrian?</a></li>
 
-                        <li><a href="van.html">Van facilities </a></li>
-                        <li><a href="admissions.html">Admissions @ The Adrian
-                           </a></li>
-                        <li><a href="careers.html">Careers @ The Adrian </a></li>
+                     <li><a href="syllabus.html">Syllabus and Curriculum</a></li>
+                     <li><a href="facilities.html">Facilities </a></li>
+                     <li><a href="luncheon.html">Luncheon @ The Adrian </a></li>
 
-                        <li><a href="gallery.html">Gallery</a></li>
+                     <li><a href="van.html">Van facilities </a></li>
+                     <li><a href="admissions.html">Admissions @ The Adrian
+                        </a></li>
+                     <li><a href="careers.html">Careers @ The Adrian </a></li>
 
-                        <li><a href="news.html">News & Notice</a></li>
-                     </ul>
-                  </div>
+                     <li><a href="gallery.html">Gallery</a></li>
+
+                     <li><a href="news.html">News & Notice</a></li>
+                  </ul>
                </div>
             </div>
          </div>
-      </section>
-      <!-- brand area end -->
-      <!-- footer area start -->
-      <footer style="background: rgb(2,0,36);
+      </div>
+   </section>
+   <!-- brand area end -->
+   <!-- footer area start -->
+   <footer style="background: rgb(2,0,36);
 background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(10,50,62,1) 36%);">
-         <div class="footer__area">
-            <div class="footer__top  pt-95 pb-45">
-               <div class="container">
-                  <div class="row">
-                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-7">
-                        <div class="footer__widget footer-col-1 mb-50">
-                           <div class="footer__logo">
-                              <div class="logo">
-                                 <a href="index.html">
-                                    <img src="assets/img/logo/logo.svg" alt
-                                       style="width:300px !important">
-                                 </a>
-                              </div>
+      <div class="footer__area">
+         <div class="footer__top  pt-95 pb-45">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-7">
+                     <div class="footer__widget footer-col-1 mb-50">
+                        <div class="footer__logo">
+                           <div class="logo">
+                              <a href="index.html">
+                                 <img src="assets/img/logo/logo.svg" alt style="width:300px !important">
+                              </a>
                            </div>
-                           <div class="footer__widget-content">
-                              <div class="footer__widget-info">
-                                 <p style="color: var(--tp-common-white);">At
-                                    Adrian, education delivers a customized
-                                    syllabus specifically framed from the
-                                    scratch which met the local need, satisfying
-                                    the Global parameters. </p>
-                                 <div class="footer__social">
-                                    <h4 style="color: var(--tp-common-white);">
-                                       Follow Us</h4>
+                        </div>
+                        <div class="footer__widget-content">
+                           <div class="footer__widget-info">
+                              <p style="color: var(--tp-common-white);">At
+                                 Adrian, education delivers a customized
+                                 syllabus specifically framed from the
+                                 scratch which met the local need, satisfying
+                                 the Global parameters. </p>
+                              <div class="footer__social">
+                                 <h4 style="color: var(--tp-common-white);">
+                                    Follow Us</h4>
 
-                                    <ul>
-                                       <li><a
-                                             href="https://www.facebook.com/The-Adrian-Loyal-SchoolKarur-1839699206323495/?ref=br_rs"><i
-                                                class="fa-brands fa-facebook-f"></i></a></li>
-                                       <li><a
-                                             href="https://www.instagram.com/the_adrian_schools/"><i
-                                                class="fa-brands fa-twitter"></i></a></li>
-                                       <li><a
-                                             href="https://www.youtube.com/channel/UCKui6VaNMh3OcRDVigywFIA"><i
-                                                class="fa-brands fa-instagram"></i></a></li>
-                                    </ul>
-                                 </div>
+                                 <ul>
+                                    <li><a
+                                          href="https://www.facebook.com/The-Adrian-Loyal-SchoolKarur-1839699206323495/?ref=br_rs"><i
+                                             class="fa-brands fa-facebook-f"></i></a></li>
+                                    <li><a href="https://www.instagram.com/the_adrian_schools/"><i
+                                             class="fa-brands fa-twitter"></i></a></li>
+                                    <li><a href="https://www.youtube.com/channel/UCKui6VaNMh3OcRDVigywFIA"><i
+                                             class="fa-brands fa-instagram"></i></a></li>
+                                 </ul>
                               </div>
                            </div>
                         </div>
                      </div>
-                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-3 col-sm-5"
-                        style="color: var(--tp-common-white);">
-                        <div class="footer__widget mb-50">
-                           <h3 class="footer__widget-title"
-                              style="color: var(--tp-common-white);">Explore</h3>
-                           <div class="footer__widget-content">
+                  </div>
+                  <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-3 col-sm-5" style="color: var(--tp-common-white);">
+                     <div class="footer__widget mb-50">
+                        <h3 class="footer__widget-title" style="color: var(--tp-common-white);">Explore</h3>
+                        <div class="footer__widget-content">
+                           <ul>
+                              <li>
+                                 <a href="about.html">About us</a>
+                              </li>
+                              <li>
+                                 <a href="careers.html">Career</a>
+                              </li>
+                              <li>
+                                 <a href="news.html">News & Notice</a>
+                              </li>
+
+                              <li>
+                                 <a href="admissions.html">Admissions</a>
+                              </li>
+                              <li>
+                                 <a href="gallery.html">Gallery</a>
+                              </li>
+                              <li>
+                                 <a href="contact.html">Contact us</a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-3 col-sm-5">
+                     <div class="footer__widget mb-50">
+                        <div class="footer__widget-content">
+                           <div class>
                               <ul>
                                  <li>
-                                    <a href="about.html">About us</a>
-                                 </li>
-                                 <li>
-                                    <a href="careers.html">Career</a>
-                                 </li>
-                                 <li>
-                                    <a href="news.html">News & Notice</a>
-                                 </li>
+                                    <div class="contact__info-item d-flex align-items-start mb-10">
+                                       <div class="contact__info-icon mr-15">
+                                          <svg class="map" viewBox="0 0 24 24">
+                                             <path class="st0"
+                                                d="M21,10c0,7-9,13-9,13s-9-6-9-13c0-5,4-9,9-9S21,5,21,10z"></path>
+                                             <circle class="st0" cx="12" cy="10" r="3"></circle>
+                                          </svg>
+                                       </div>
+                                       <div class="contact__info-text" style="color: var(--tp-common-white);">
+                                          <h4 style="color: var(--tp-common-white);">The
+                                             Adrian School | The Adrian Loyal
+                                             School</h4>
+                                          <p><b> Address :</b> LGB Nagar,
+                                             Karur, Tamil Nadu 639001 <br>
+                                             106/1, Kakavadi Village,
+                                             Kakkavadi, Karur - 639003 <br></p>
 
-                                 <li>
-                                    <a href="admissions.html">Admissions</a>
+                                       </div>
+                                    </div>
                                  </li>
                                  <li>
-                                    <a href="gallery.html">Gallery</a>
+                                    <div class="contact__info-item d-flex align-items-start mb-10">
+                                       <div class="contact__info-icon mr-15">
+                                          <svg class="mail" viewBox="0 0 24 24">
+                                             <path class="st0"
+                                                d="M4,4h16c1.1,0,2,0.9,2,2v12c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2V6C2,4.9,2.9,4,4,4z">
+                                             </path>
+                                             <polyline class="st0" points="22,6 12,13 2,6 "></polyline>
+                                          </svg>
+                                       </div>
+                                       <div class="contact__info-text">
+                                          <h4 style="color: var(--tp-common-white);">Email
+                                             us directly</h4>
+                                          <p><a
+                                                href="mailto:adrianschoolskarur@gmail.com">adrianschoolskarur@gmail.com</a>
+                                          </p>
+                                       </div>
+                                    </div>
                                  </li>
                                  <li>
-                                    <a href="contact.html">Contact us</a>
+                                    <div class="contact__info-item d-flex align-items-start mb-10">
+                                       <div class="contact__info-icon mr-15">
+                                          <svg class="call" viewBox="0 0 24 24">
+                                             <path class="st0"
+                                                d="M22,16.9v3c0,1.1-0.9,2-2,2c-0.1,0-0.1,0-0.2,0c-3.1-0.3-6-1.4-8.6-3.1c-2.4-1.5-4.5-3.6-6-6  c-1.7-2.6-2.7-5.6-3.1-8.7C2,3.1,2.8,2.1,3.9,2C4,2,4.1,2,4.1,2h3c1,0,1.9,0.7,2,1.7c0.1,1,0.4,1.9,0.7,2.8c0.3,0.7,0.1,1.6-0.4,2.1  L8.1,9.9c1.4,2.5,3.5,4.6,6,6l1.3-1.3c0.6-0.5,1.4-0.7,2.1-0.4c0.9,0.3,1.8,0.6,2.8,0.7C21.3,15,22,15.9,22,16.9z">
+                                             </path>
+                                          </svg>
+                                       </div>
+                                       <div class="contact__info-text">
+                                          <h4 style="color: var(--tp-common-white);">Phone</h4>
+                                          <p><a href="tel:+(91)-96004 22277">+(91)-96004
+                                                22277</a></p>
+                                       </div>
+                                    </div>
                                  </li>
                               </ul>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-3 col-sm-5">
-                        <div class="footer__widget mb-50">
-                           <div class="footer__widget-content">
-                              <div class>
-                                 <ul>
-                                    <li>
-                                       <div
-                                          class="contact__info-item d-flex align-items-start mb-10">
-                                          <div class="contact__info-icon mr-15">
-                                             <svg class="map"
-                                                viewBox="0 0 24 24">
-                                                <path class="st0"
-                                                   d="M21,10c0,7-9,13-9,13s-9-6-9-13c0-5,4-9,9-9S21,5,21,10z"></path>
-                                                <circle class="st0" cx="12"
-                                                   cy="10" r="3"></circle>
-                                             </svg>
-                                          </div>
-                                          <div class="contact__info-text"
-                                             style="color: var(--tp-common-white);">
-                                             <h4
-                                                style="color: var(--tp-common-white);">The
-                                                Adrian School | The Adrian Loyal
-                                                School</h4>
-                                             <p><b> Address :</b> LGB Nagar,
-                                                Karur, Tamil Nadu 639001 <br>
-                                                106/1, Kakavadi Village,
-                                                Kakkavadi, Karur - 639003 <br></p>
 
-                                          </div>
-                                       </div>
-                                    </li>
-                                    <li>
-                                       <div
-                                          class="contact__info-item d-flex align-items-start mb-10">
-                                          <div class="contact__info-icon mr-15">
-                                             <svg class="mail"
-                                                viewBox="0 0 24 24">
-                                                <path class="st0"
-                                                   d="M4,4h16c1.1,0,2,0.9,2,2v12c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2V6C2,4.9,2.9,4,4,4z"></path>
-                                                <polyline class="st0"
-                                                   points="22,6 12,13 2,6 "></polyline>
-                                             </svg>
-                                          </div>
-                                          <div class="contact__info-text">
-                                             <h4
-                                                style="color: var(--tp-common-white);">Email
-                                                us directly</h4>
-                                             <p><a
-                                                   href="mailto:adrianschoolskarur@gmail.com">adrianschoolskarur@gmail.com</a></p>
-                                          </div>
-                                       </div>
-                                    </li>
-                                    <li>
-                                       <div
-                                          class="contact__info-item d-flex align-items-start mb-10">
-                                          <div class="contact__info-icon mr-15">
-                                             <svg class="call"
-                                                viewBox="0 0 24 24">
-                                                <path class="st0"
-                                                   d="M22,16.9v3c0,1.1-0.9,2-2,2c-0.1,0-0.1,0-0.2,0c-3.1-0.3-6-1.4-8.6-3.1c-2.4-1.5-4.5-3.6-6-6  c-1.7-2.6-2.7-5.6-3.1-8.7C2,3.1,2.8,2.1,3.9,2C4,2,4.1,2,4.1,2h3c1,0,1.9,0.7,2,1.7c0.1,1,0.4,1.9,0.7,2.8c0.3,0.7,0.1,1.6-0.4,2.1  L8.1,9.9c1.4,2.5,3.5,4.6,6,6l1.3-1.3c0.6-0.5,1.4-0.7,2.1-0.4c0.9,0.3,1.8,0.6,2.8,0.7C21.3,15,22,15.9,22,16.9z"></path>
-                                             </svg>
-                                          </div>
-                                          <div class="contact__info-text">
-                                             <h4
-                                                style="color: var(--tp-common-white);">Phone</h4>
-                                             <p><a href="tel:+(91)-96004 22277">+(91)-96004
-                                                   22277</a></p>
-                                          </div>
-                                       </div>
-                                    </li>
-                                 </ul>
-
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="footer__bottom">
-               <div class="container">
-                  <div class="footer__bottom-inner">
-                     <div class="row">
-                        <div class="col-xxl-6">
-                           <div class="footer__copyright">
-                              <p>© 2024 The Adrian Loyal School. All Rights
-                                 Reserved</p>
-                           </div>
-                        </div>
-                        <div class="col-xxl-6">
-                           <div class="footer__copyright ">
-                              <p class="text-end">Designed by <a
-                                    href="https://www.klartdigi.com/">klartdigi</a></p>
                            </div>
                         </div>
                      </div>
@@ -414,26 +451,47 @@ background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(10,50,62,1) 36%);">
                </div>
             </div>
          </div>
-      </footer>
-      <!-- footer area end -->
+         <div class="footer__bottom">
+            <div class="container">
+               <div class="footer__bottom-inner">
+                  <div class="row">
+                     <div class="col-xxl-6">
+                        <div class="footer__copyright">
+                           <p>© 2024 The Adrian Loyal School. All Rights
+                              Reserved</p>
+                        </div>
+                     </div>
+                     <div class="col-xxl-6">
+                        <div class="footer__copyright ">
+                           <p class="text-end">Designed by <a href="https://www.klartdigi.com/">klartdigi</a></p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+   <!-- footer area end -->
 
-      <!-- JS here -->
-      <script src="assets/js/vendor/jquery.js"></script>
-      <script src="assets/js/vendor/waypoints.js"></script>
-      <script src="assets/js/bootstrap-bundle.js"></script>
-      <script src="assets/js/meanmenu.js"></script>
-      <script src="assets/js/swiper-bundle.js"></script>
-      <script src="assets/js/owl-carousel.js"></script>
-      <script src="assets/js/magnific-popup.js"></script>
-      <script src="assets/js/parallax.js"></script>
-      <script src="assets/js/backtotop.js"></script>
-      <script src="assets/js/nice-select.js"></script>
-      <script src="assets/js/counterup.js"></script>
-      <script src="assets/js/wow.js"></script>
-      <script src="assets/js/isotope-pkgd.js"></script>
-      <script src="assets/js/imagesloaded-pkgd.js"></script>
-      <script src="assets/js/ajax-form.js"></script>
-      <script src="assets/js/main.js"></script>
+   <!-- JS here -->
+   <script src="assets/js/vendor/jquery.js"></script>
+   <script src="assets/js/vendor/waypoints.js"></script>
+   <script src="assets/js/bootstrap-bundle.js"></script>
+   <script src="assets/js/meanmenu.js"></script>
+   <script src="assets/js/swiper-bundle.js"></script>
+   <script src="assets/js/owl-carousel.js"></script>
+   <script src="assets/js/magnific-popup.js"></script>
+   <script src="assets/js/parallax.js"></script>
+   <script src="assets/js/backtotop.js"></script>
+   <script src="assets/js/nice-select.js"></script>
+   <script src="assets/js/counterup.js"></script>
+   <script src="assets/js/wow.js"></script>
+   <script src="assets/js/isotope-pkgd.js"></script>
+   <script src="assets/js/imagesloaded-pkgd.js"></script>
+   <script src="assets/js/ajax-form.js"></script>
+   <script src="assets/js/main.js"></script>
 
-   </body>
+</body>
+
 </html>
